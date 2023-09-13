@@ -1,0 +1,35 @@
+debug: False
+
+
+ctrl:
+  # MODE:开启视频(video)/相机(camera)
+  # RECORDING:是否录制预测结果视频
+  # SENDING:发送小地图信息(开启子线程)
+  # SAVE:隔30帧保存图片(原图 + 结果图)
+  MODE: 'camera'
+  DETECT: True
+  LAST_ARMOR: True
+  RECORDING: True
+  GUI: True
+  ANCHOR: True
+
+  SENDING: True
+  RECEIVING: False
+
+  MAP: False
+  CALIB: False
+  SAVE_CSV: False
+  SAVE_IMG: False
+
+  CHESSBOARD: False
+
+video:
+  bin_video_root: './video'
+  mon_video: './video/highway.mp4'
+
+weights:
+  yolov8: './weights/yolov8/0801_sumup_80.pt'
+
+ui:
+  image_w: 1280
+  image_h: 640

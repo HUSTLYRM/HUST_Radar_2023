@@ -1,0 +1,36 @@
+ctrl:
+  trigger_soft: False
+  detect_tag: False
+  save: False
+
+id: '00C33080963'
+
+set:
+  yaw: 0.
+  roll: 0.
+
+param:
+  Width: 1280
+  Height: 640 # 1024
+  OffsetY: 192
+
+  ExposureTime: 60000.
+  GammaEnable: True
+  Gamma: 0.7
+  BalanceWhiteAuto: 'Off'
+  BalanceRatioR: 1249
+  BalanceRatioG: 1024
+  BalanceRatioB: 1546
+
+calib:
+  intrinsic: [[8.401546112021364e+03,0,1.624851920259910e+03],
+              [0,8.392266299039500e+03,-4.864489134456645e+02],
+              [0,0,1]]
+  distortion: [-0.117775868509382, -1.755230778078897, 0, 0]
+
+
+
+tag:
+  size: 144 # 160.3 # 144  # 108?144mm outer bound
+  params: [7.098906484423782e+03, 7.116752657930663e+03, 5.796490914118564e+02, 3.829623962233469e+02]
+  # camera_fx, camera_fy, camera_cx, camera_cy = (c for c in camera_params)

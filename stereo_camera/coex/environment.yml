@@ -1,0 +1,25 @@
+name: coex
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - anaconda
+  - defaults
+dependencies:
+  - python=3.7
+  - pip
+  - numpy
+  - pytorch==1.11.0
+  - torchvision==0.12.0
+  - cudatoolkit=11.3
+  - ruamel.yaml
+  - pillow
+  - scikit-image
+  - pip:
+    - pytorch-lightning==1.6.5
+    - opencv-contrib-python
+    - albumentations
+    - timm==0.6.5
+    - test-tube
+    # - --find-links https://github.com/pytorch/TensorRT/releases
+    # - torch-tensorrt
