@@ -2,7 +2,7 @@ debug: False
 
 
 ctrl:
-  MODE: 'camera'
+  MODE: 'video'  # 'camera'
   DETECT: True
   RECORDING: True
   GUI: True
@@ -29,3 +29,5 @@ weights:
 ui:
   image_w: 1280
   image_h: 640
+
+portx: 'COM7'

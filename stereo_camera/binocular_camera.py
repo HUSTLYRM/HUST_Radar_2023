@@ -272,14 +272,15 @@ def get_camera(cfg=None):
     return cam_left, cam_right, ret_p, ret_q
 
 
-def get_video_loader(video_path):
+def get_video_loader(video_left_path, video_right_path):
     """size_dont_fit = False"""
-    cam = cv2.VideoCapture(video_path)
+    cam_left = cv2.VideoCapture(video_left_path)
+    cam_right = cv2.VideoCapture(video_right_path)
 
-    frames_total = cam.get(cv2.CAP_PROP_FRAME_COUNT)
+    frames_total = cam_left.get(cv2.CAP_PROP_FRAME_COUNT)
     print("frames_total: ", frames_total)
 
-    fps = cam.get(cv2.CAP_PROP_FPS)
-    size = (int(cam.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cam.get(cv2.CAP_PROP_FRAME_HEIGHT)))
+    fps = cam_left.get(cv2.CAP_PROP_FPS)
+    size = (int(cam_left.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cam_left.get(cv2.CAP_PROP_FRAME_HEIGHT)))
 
-    return cam, fps, size
+    return cam_left, cam_right, fps, size

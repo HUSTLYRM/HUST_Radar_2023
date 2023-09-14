@@ -1,6 +1,6 @@
 import cv2
 
-from macro import *
+from global_variables import *
 
 
 class PointsPicker:

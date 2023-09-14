@@ -1,6 +1,6 @@
 import cv2
 
-from point_picker import PointsPicker
+from camera_locator.point_picker import PointsPicker
 
 
 class Anchor:

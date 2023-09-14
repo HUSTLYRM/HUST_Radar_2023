@@ -1,4 +1,4 @@
-from tracker import TrackerPool
+from enemy_locator.tracker import TrackerPool
 
 classes = ["car", "armor1red", "armor2red", "armor3red", "armor4red", "armor5red",
            "armor1blue", "armor2blue", "armor3blue", "armor4blue", "armor5blue", "base", "ignore"]

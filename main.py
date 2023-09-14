@@ -10,14 +10,13 @@ import torch
 from ruamel.yaml import YAML
 from ultralytics import YOLO
 
+from global_variables import *
 import my_serial as messager
 from stereo_camera import binocular_camera as bc
 from stereo_camera.coex_matcher import CoExMatcher
-from target import Targets
-from anchor import Anchor
-from anchor import set_by_hand
-from macro import *
-import coord_solver as cc
+from enemy_locator.target import Targets
+from camera_locator.anchor import Anchor, set_by_hand
+import camera_locator.coord_solver as cc
 from utils.chessboard_corner import find_chessboard_corners
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene
@@ -33,16 +32,14 @@ classes = ["car", "armor1red", "armor2red", "armor3red", "armor4red", "armor5red
            "armor1blue", "armor2blue", "armor3blue", "armor4blue", "armor5blue", "base", "ignore"]
 
 ENEMY_COLOR = BLUE
-portx = 'COM3'
 device = torch.device('cuda:0')
 
 main_cfg_path = "./configs/main_config.yaml"
 binocular_camera_cfg_path = "./configs/bin_cam_config.yaml"
-monocular_camera_cfg_path = "./configs/mon_cam_config.yaml"
 main_cfg = YAML().load(open(main_cfg_path, encoding='Utf-8', mode='r'))
 bin_cam_cfg = YAML().load(open(binocular_camera_cfg_path, encoding='Utf-8', mode='r'))
-mon_cam_cfg = YAML().load(open(monocular_camera_cfg_path, encoding='Utf-8', mode='r'))
 
+portx = main_cfg['portx']
 if main_cfg['debug']:
     portx = 'COM7'
 
@@ -117,20 +114,16 @@ if main_cfg['ctrl']['RECORDING']:
         os.mkdir(left_video_folder)
     if not os.path.exists(right_video_folder):
         os.mkdir(right_video_folder)
-    if not os.path.exists(lf_video_folder):
-        os.mkdir(lf_video_folder)
     if not os.path.exists(video_folder + '/cfg'):
         os.mkdir(video_folder + '/cfg')
     dst = video_folder + '/cfg'
     shutil.copy(binocular_camera_cfg_path, dst)
-    shutil.copy(monocular_camera_cfg_path, dst)
 
     fourcc_colored = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')  # ('M', 'P', '4', 'V')
     frame_size = (bin_cam_cfg['param']['Width'], bin_cam_cfg['param']['Height'])
     left_video = cv2.VideoWriter(left_video_folder + "/raw_left.mp4", fourcc_colored, 12, frame_size, True)
     right_video = cv2.VideoWriter(right_video_folder + "/raw_right.mp4", fourcc_colored, 12, frame_size, True)
     depth_video = cv2.VideoWriter(video_folder + "/dep_view_left.mp4", fourcc_colored, 12, frame_size, True)
-    lf_video = cv2.VideoWriter(lf_video_folder + "/lf.mp4", fourcc_colored, 12, frame_size, True)
     fourcc_grey = cv2.VideoWriter_fourcc('d', 'i', 'v', 'x')
     disp_video = cv2.VideoWriter(video_folder + "/disp_left.divx", fourcc_grey, 12, frame_size, True)
 
@@ -151,7 +144,8 @@ def push_button_clicked_quit():
 
 def main():
     global targets
-    camera_left = camera_right = camera_lf = None
+    camera_left = camera_right = None
+    image_left = image_right = None
     ret_p = ret_q = None
     coex_matcher = None
     model_car = None
@@ -161,16 +155,17 @@ def main():
     timeout_draw_zone = False
 
     if main_cfg['ctrl']['MODE'] == 'video':
-        camera_left, fps, size = bc.get_video_loader(main_cfg['video'])
+        camera_left, camera_right, fps, size = bc.get_video_loader(main_cfg['video']['bin_video_left'],
+                                                                    main_cfg['video']['bin_video_right'])
 
     elif main_cfg['ctrl']['MODE'] == 'camera':
         print("\nLoading binocular camera")
         camera_left, camera_right, ret_p, ret_q = bc.get_camera(bin_cam_cfg)
         print("Done")
 
-        print("\nLoading matching model")
-        coex_matcher = CoExMatcher(bin_cam_cfg)
-        print("Done\n")
+    print("\nLoading matching model")
+    coex_matcher = CoExMatcher(bin_cam_cfg)
+    print("Done\n")
 
     left_cam_cfg = dict()
     left_cam_cfg['intrinsic'] = bin_cam_cfg['calib']['intrinsic1']
@@ -179,9 +174,13 @@ def main():
     if main_cfg['ctrl']['ANCHOR']:
         anchor = Anchor()
         while True:  # this while is for case where no img got
-            image_left = bc.get_frame(camera_left, 'left_camera', ret_p)
-            # to keep synchronous
-            image_right = bc.get_frame(camera_right, 'right_camera', ret_q)
+            if main_cfg['ctrl']['MODE'] == 'video':
+                ret, image_left = camera_left.read()
+                ret, image_right = camera_right.read()
+
+            elif main_cfg['ctrl']['MODE'] == 'camera':
+                image_left = bc.get_frame(camera_left, 'left_camera', ret_p)
+                image_right = bc.get_frame(camera_right, 'right_camera', ret_q)
 
             if image_left is None or image_right is None:
                 continue
@@ -223,8 +222,14 @@ def main():
     while Loop:
         if cv2.waitKey(1) == ord('q'):
             Loop = False
-        image_left = bc.get_frame(camera_left, 'left_camera', ret_p)
-        image_right = bc.get_frame(camera_right, 'right_camera', ret_q)
+
+        if main_cfg['ctrl']['MODE'] == 'video':
+            ret, image_left = camera_left.read()
+            ret, image_right = camera_right.read()
+
+        elif main_cfg['ctrl']['MODE'] == 'camera':
+            image_left = bc.get_frame(camera_left, 'left_camera', ret_p)
+            image_right = bc.get_frame(camera_right, 'right_camera', ret_q)
 
         if image_right is not None and image_left is not None:
             if main_cfg['ctrl']['RECORDING']:
@@ -260,9 +265,10 @@ def main():
                                 )
                     cv2.imshow('xyz', image_with_corners)
 
-            if cnt == 10:
+            # skip starting frames for more accurate time record
+            if cnt == 20:
                 start = time.time()
-            if cnt > 10:
+            if cnt > 20:
                 now = time.time()
                 fps = (cnt - 10) / (now - start)
                 cv2.putText(disp_np,
@@ -333,19 +339,16 @@ def main():
     if main_cfg['ctrl']['MODE'] == 'camera':
         bc.camera_close(camera_left, 'camera_left')
         bc.camera_close(camera_right, 'camera_right')
-        bc.camera_close(camera_lf, 'camera_lf')
 
     cv2.destroyAllWindows()
 
     if main_cfg['ctrl']['RECORDING']:
         os.system('copy bin_cam_config.yaml ' + video_folder[2:] + '/cfg/bin_cam_config.yaml')
-        os.system('copy mon_cam_config.yaml ' + video_folder[2:] + '/cfg/mon_cam_config.yaml')
         os.system('copy main_config.yaml ' + video_folder[2:] + '/cfg/main_config.yaml')
         left_video.release()
         right_video.release()
         disp_video.release()
         depth_video.release()
-        lf_video.release()
 
     if main_cfg['ctrl']['SAVE_CSV']:
         chart.close()

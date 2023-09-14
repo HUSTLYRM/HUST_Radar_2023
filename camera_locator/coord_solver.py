@@ -2,7 +2,7 @@ import math
 import cv2
 import numpy as np
 
-from macro import *
+from global_variables import *
 
 
 def get_wld_coord(cam_pos, cam_coord):
