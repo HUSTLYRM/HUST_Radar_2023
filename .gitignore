@@ -1,3 +1,4 @@
 
 weights/yolov8/0801_sumup_80.pt
 *.pyc
+*.mp4

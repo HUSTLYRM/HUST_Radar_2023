@@ -277,6 +277,12 @@ def get_video_loader(video_left_path, video_right_path):
     cam_left = cv2.VideoCapture(video_left_path)
     cam_right = cv2.VideoCapture(video_right_path)
 
+    retl, fl = cam_left.read()
+    retr, fr = cam_right.read()
+    if not (retl and retr):
+        print("error reading!")
+        exit(1)
+
     frames_total = cam_left.get(cv2.CAP_PROP_FRAME_COUNT)
     print("frames_total: ", frames_total)
 
