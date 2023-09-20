@@ -117,9 +117,9 @@ todo：流程图
 
 ## 相关资源
 
-​		[YOLOv8权重]()
+​		[YOLOv8权重](https://pan.baidu.com/s/1RFK_eKSBh60MukupwbgaCw?pwd=hust)
 
-​		[双视图比赛视频]()
+​		[双视图比赛视频](https://pan.baidu.com/s/1_nLqc6f79uhW1FTpmXW91A?pwd=hust)
 
 ## 局限性
 
