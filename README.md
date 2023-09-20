@@ -56,6 +56,10 @@ HUST_Radar_2023
 
 <img src=".\images\det.png" alt="det" width="600" />
 
+<img src=".\images\8_5.gif" alt="det" width="600" />
+
+​		不过有时可以看到兑矿的工程。
+
 ### 地图数据可视化
 
 ​		调试模块：[RadarDebugger_Monitor](https://github.com/HUSTLYRM/RadarDebugger_Monitor)
