@@ -10,6 +10,8 @@
 
 ​	很多地方都不完善，更多的是希望能提供一些参考。
 
+
+
 ## 文件结构
 
 ```
@@ -107,7 +109,7 @@ bin_camera_config：用于输入双目相机内外参，以及对工业相机的
 
 ### 运行
 
-Windows运行脚本可参考[launch.bat]()
+Windows运行脚本可参考[launch.bat](./launch.bat)
 
 ### 调试
 
