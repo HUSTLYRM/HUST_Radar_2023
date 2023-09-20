@@ -10,7 +10,7 @@
 
 ​	  很多地方都不完善，更多的是希望能提供一些参考。
 
-<img src=".\images\radar.jpg" alt="radar" width="550"  />
+<img src=".\images\radar.jpg" alt="radar" width="450"  />
 
 ## 文件结构
 
@@ -122,9 +122,9 @@ HUST_Radar_2023
 
 ## 相关资源
 
-​		[YOLOv8权重]()
+​		[YOLOv8权重](https://pan.baidu.com/s/1RFK_eKSBh60MukupwbgaCw?pwd=hust)
 
-​		[双视图比赛视频]()
+​		[双视图比赛视频](https://pan.baidu.com/s/1_nLqc6f79uhW1FTpmXW91A?pwd=hust)
 
 ## 局限性
 
