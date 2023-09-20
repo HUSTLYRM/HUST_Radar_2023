@@ -1,6 +1,6 @@
 # 双目相机模块
 
-![Screenshot 2023-07-15 154616]([bincam](https://github.com/HUSTLYRM/HUST_Radar_2023/blob/main/images/bincam.png))
+![Screenshot 2023-07-15 154616](https://github.com/HUSTLYRM/HUST_Radar_2023/blob/main/images/bincam.png)
 
 ## 简述
 
