@@ -11,10 +11,8 @@ ctrl:
   SENDING: True
   RECEIVING: False
 
-  MAP: False
   CALIB: False
   SAVE_CSV: False
-  SAVE_IMG: False
 
   CHESSBOARD: False
 
@@ -25,9 +23,3 @@ video:
 
 weights:
   yolov8: './weights/yolov8/0801_sumup_80.pt'
-
-ui:
-  image_w: 1280
-  image_h: 640
-
-portx: 'COM7'
