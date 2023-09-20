@@ -68,7 +68,7 @@ HUST_Radar_2023
 
 ​		各模块内部细节见模块内README文件说明
 
-<img src="C:\Users\13572\Desktop\main_flow.png" alt="main_flow" width="200" />
+<img src=".\images\main_flow.png" alt="main_flow" width="200" />
 
 
 
