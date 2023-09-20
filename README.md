@@ -52,7 +52,9 @@ HUST_Radar_2023
 
 ### 目标检测效果
 
+​		识别覆盖的范围较大，但对装甲板的识别效果不稳定，有很多误识别。
 
+<img src=".\images\det.png" alt="det" width="600" />
 
 ### 地图数据可视化
 
@@ -66,7 +68,7 @@ HUST_Radar_2023
 
 ​		各模块内部细节见模块内README文件说明
 
-todo：流程图
+<img src="C:\Users\13572\Desktop\main_flow.png" alt="main_flow" width="200" />
 
 
 
@@ -90,10 +92,11 @@ todo：流程图
 
 ### 依赖
 
-​	 	 程序基于Python3.9完成，依赖较多（建议使用虚拟环境），请参考requirements.txt。其中Correlate-and-Excite（实时立体匹配，CoEx）和YOLOv8的依赖请参考官方文档。
+​	 	 程序基于Python3.8完成，依赖较多（建议使用虚拟环境），请参考requirements.txt。其中[Correlate-and-Excite](https://github.com/antabangun/coex)（实时立体匹配，CoEx）和[YOLOv8](https://github.com/ultralytics/ultralytics)的依赖请参考官方文档。
 
-* **注意先满足立体匹配模型的依赖，再添加其他包**，此外若同样使用海康工业相机，需要先安装海康SDK。
-* 用到的“serial”模块是“pyserial”。
+* **注意先满足立体匹配模型的依赖，再添加其他包**
+* 若同样使用海康工业相机，需要先安装海康SDK
+* 用到的“serial”模块是“pyserial”
 
 ## 功能/操作说明 
 
@@ -106,6 +109,8 @@ todo：流程图
 ### 运行
 
 ​		Windows运行脚本可参考[launch.bat](./launch.bat)
+
+​		程序启动可能会花费很久（甚至超过一分钟，可能是导入包花费时间）
 
 ### 调试
 
